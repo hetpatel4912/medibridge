@@ -1,0 +1,23 @@
+{% extends "user_layout.html" %}
+{% load static  %}
+{% block content %}
+
+
+<section class="about" id="about">
+    <h1 class="heading"><span>About us</span></h1>
+    <div class="row">
+        <div class="image">
+            <img src="{% static 'img/about-img.svg.png' %} " alt="">
+        </div>
+        <div class="content">
+            <h3>we take care of your life</h3>
+            <p>Our medical services are designed to provide comprehensive healthcare solutions tailored to meet the needs of our patients. We offer convenient appointment booking, allowing you to schedule visits with experienced healthcare professionals at your convenience. Our platform also provides access to telemedicine services, enabling virtual consultations from the comfort of your home.</p>
+            <p>Additionally, we facilitate prescription management and access to affordable medications, ensuring that you receive the treatments you need without financial strain. With a focus on quality care and patient satisfaction, our services aim to enhance your overall health and wellness journey. Whether you need routine check-ups or specialized care, we are here to support you every step of the way.</p>
+            <a href="#" class="btn">learn more <span class="fas fa-chevron-right"></span></a>
+        </div>
+    </div>
+    
+</section>
+
+
+{% endblock content %}

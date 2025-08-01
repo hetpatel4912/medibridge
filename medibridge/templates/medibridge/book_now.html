@@ -1,0 +1,124 @@
+{% extends "user_layout.html" %}
+{% load static  %}
+{% block content %}
+
+<section class="book" id="book">
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}  
+        {% endfor %}
+    {% endif %}
+
+
+    <div class="heading">Book<span> now</span></div>
+    <div class="row">
+        <div class="image">
+            <img src="{% static 'img/book-img.svg.jpeg' %} " alt="">
+        </div>
+        <form action="/api/appointment/" onsubmit="return app_submit()" id="appointment_form" method="POST">
+            {% csrf_token %}
+            <h3>Book Appointment</h3>
+            <select name="d_id" id="doctor" class="box" required>
+                {% if d_id %}
+                    {% for doc in doctor_id %}
+                        <option value="{{doc.id}}">{{doc.id}}</option>
+                    {% endfor %}
+                    {% for doc in doctors %}
+                    <option value="{{doc.id}}">{{doc.id}}</option>
+                    {% endfor %}
+                {% else %}
+                    <option disabled selected >Select Doctor ID</option>
+                    {% for doc in doctors %}
+                        <option value="{{doc.id}}">{{doc.id}}</option>
+                    {% endfor %}
+                {% endif %}
+            </select>
+            {% if d_id %}
+                {% for doc in doctor_id %}
+                    <input type="text" value="{{doc.name}}" name="d_name" placeholder="Doctor Name" class="box" id="doctor_name" required readonly >
+                    <input type="text" value="{{doc.specialist}}" name="d_specialist" placeholder="Doctor Specialist" class="box" id="doctor_specialist" readonly required>
+                {% endfor %}
+            {% else %}
+                <input type="text" name="d_name" placeholder="Doctor Name" class="box" id="doctor_name" required readonly >
+                <input type="text" name="d_specialist" placeholder="Doctor Specialist" class="box" id="doctor_specialist" readonly required>
+            {% endif %}
+            
+            <input type="text" name="name" placeholder="Patient Name" class="box" required>
+            <input type="number" name="phoneno" placeholder="Phone Number" class="box" required>
+            <input type="email" name="email" placeholder="email" class="box" value="{{user.email}}" readonly>
+            <input type="" name="date" placeholder="yyyy-mm-dd" class="box" id="date" required>
+            <input type="submit" value="Book now" class="btn">
+        </form>
+    </div>
+</section>
+
+
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+
+<script>
+
+    function app_submit(){
+        const form = document.getElementById('appointment_form');
+        const phoneno = form.querySelector('input[name="phoneno"]').value;
+        if (phoneno.length < 8){
+            alert('Phone No. length should be 10 Digit');
+            return false;
+        }
+    }
+
+    document.getElementById("appointment_form").addEventListener("submit", function(event) {
+        let doctor_name = document.getElementById("doctor_name");
+        let doctor_specialist = document.getElementById("doctor_specialist");
+    
+        if (!(doctor_name.value.trim() || doctor_specialist.value.trim())) {
+            alert("Required Filled is Empty");
+            event.preventDefault(); // Stop form submission
+        }
+    });
+
+    document.getElementById("doctor").addEventListener("change", function () {
+        let id = this.value; // Get selected doctor ID
+    
+        if (id) {
+            fetch(`/api/doctor/${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Update textboxes with response data
+                    document.getElementById("doctor_name").value = data.doctor_name;
+                    document.getElementById("doctor_specialist").value = data.doctor_specialist;
+    
+                    let disabledDates = data.dates; // Ensure clean format
+    
+                    $("#date").datepicker("destroy"); // Destroy existing datepicker
+                    $("#date").datepicker({
+                        dateFormat: "yy-mm-dd",
+                        minDate: 0, // Disable past dates
+                        beforeShowDay: function (date) {
+                            let formattedDate = $.datepicker.formatDate("yy-mm-dd", date);
+                            return [disabledDates.indexOf(formattedDate) === -1]; // Disable booked dates
+                        }
+                    });
+
+                    let dateInput = document.getElementById("date");
+                    dateInput.value = "";
+                    dateInput.addEventListener("input", function () {
+                        if (disabledDates.includes(this.value)) {
+                            alert("This date is already booked. Please choose another date.");
+                            this.value = ""; // Clear the selection if date is disabled
+                        }
+                    });
+                    console.log("Disabled Dates: ", disabledDates);
+    
+                })
+                .catch(error => console.error("Error fetching data:", error));
+        }
+    });
+    
+
+</script>
+
+{% endblock content %}

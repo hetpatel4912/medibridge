@@ -1,0 +1,734 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediBridge</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'img/logo.jpeg' %} ">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <style>
+        @import url('https://fonts.googleapi.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
+
+        :root{
+            --green:#16a085;
+            --black:#444;
+            --light-color:#777;
+            --box-shadow:.5rem .5rem 0 rgba(22,160,133,.2);
+            --text-shadow:.2rem .2rem 0 rgba(0,0,0,.2);
+            --border: .2rem solid var(--green);
+        }
+
+        *{
+            font-family: 'Poppins',sans-serif;
+            margin:0; padding: 0;
+            box-sizing: border-box;
+            outline: none; border: none;
+            text-transform: capitalize;
+            transition: all .2s ease-out;
+            text-decoration: none;
+        }
+        html{
+            font-size: 62.5%;
+            overflow-x:  hidden;
+            scroll-padding-top: 7rem;
+            scroll-behavior: smooth;
+        }
+        section{
+            padding: 10rem 9%;
+        }
+        section:nth-child(even){
+            background: #f5f5f5;
+        }
+        .heading{
+            text-align: center;
+            padding-bottom: 2rem;
+            text-shadow: var(--text-shadow);
+            text-transform: uppercase;
+            color: var(--black);
+            font-size: 5rem;
+            letter-spacing: .4rem;
+        }
+        .heading{
+            text-transform: uppercase;
+            color: var(--green);
+        }
+        .btn{
+            display: inline-block;
+            margin-top: 1rem;
+            padding: .5rem;
+            padding-left: 1rem;
+            border: var(--border);
+            border-radius: .5rem;
+            box-shadow: var(--box-shadow);
+            color: var(--green);
+            cursor: pointer;
+            font-size: 1.7rem;
+            background: #fff;
+        }
+        .btn span{
+            padding: .7rem 1rem;
+            border-radius: .5rem;
+            background: var(--green);
+            color:#fff;
+            margin-left: .5rem;
+        }
+        .btn:hover{
+            background: var(--green);
+            color: #fff;
+        }
+        .btn:hover span{
+            color: var(--green);
+            background: #fff;
+            margin-left: 1rem;
+        }
+        .header{
+            padding: 2rem 2%;
+            position: fixed;
+            top: 0;left: 0;right: 0;
+            z-index: 1000;
+            box-shadow: 0 .5rem 1.5rem rgba(0,0,0,.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+        }
+
+        .header .logo{
+            font-size: 2.5rem;
+            color: var(--black);
+        }
+        .header .logo i{
+            color: var(--green);
+        }
+
+        .header .navbar{
+            display: flex;
+        }
+        .header .navbar a{
+            font-size: 1.7rem;
+            color: var(--light-color);
+            margin-left: 2rem;
+        }
+        .header .navbar a:hover{
+            color: var(--green);
+        }
+
+        {% comment %} Added part by Het{% endcomment %}
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown .dropdown-toggle{
+            margin-left: 0px;
+        }
+        
+        .dropdown-toggle {
+            font-size: 1.7rem;
+            color: var(--light-color);
+            margin-left: 2 rem;
+            cursor: pointer;
+        }
+        
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 150px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+            border-radius: 5px;
+        }
+        
+        .dropdown-menu a {
+            color: black;
+            padding: 10px;
+            display: block;
+            text-decoration: none;
+        }
+        
+        .dropdown .dropdown-menu a:hover {
+            background-color: var(--green);
+            color: white;
+        }
+        
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+        {% comment %} to this {% endcomment %}
+
+
+        #menu-btn{
+            font-size: 2.5rem;
+            border-radius: .5rem;
+            background: #eee;
+            color: var(--green);
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            display: none;
+        }
+
+        @media (max-width:991px) {
+            html{
+                font-size: 55%;
+            }
+            .header{
+                padding: 2rem;
+            }
+        }
+        @media (max-width:768px) {
+            #menu-btn{
+                display: initial;
+            }
+            .header .navbar{
+                display: block;
+                position: absolute;
+                top:115%; right: 2rem;
+                border-radius: .5rem;
+                box-shadow: var(--box-shadow);
+                width: 30rem;
+                border: var(--border);
+                background: #fff;
+                transform: scale(0);
+                opacity: 0;
+                transform-origin: top right;
+                transition: none;
+            }
+            .header .navbar.active{ 
+                transform: scale(1);
+                opacity: 1;
+                transition: .2s ease-out;
+            }
+            .header .navbar.active .profile.active{ 
+                display: block;
+            }
+
+            .header .navbar a{
+                font-size: 2rem;
+                display: block;
+                margin: 2.5rem;
+            } 
+
+            
+            .dropdown{
+                font-size: 2rem;
+                display: block;   
+            }
+            
+        
+        }
+        @media (max-width:450px) {
+            html{
+                font-size: 55%;
+            }
+        }
+        .home{
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            padding-top: 10rem;
+        }
+        .home .image{
+            flex: 1 1 45 rem;
+        }
+        .home .image img{
+            width: 100%;
+        }
+        .home .content{
+            flex: 1 1 45rem;
+        }
+        .home .content h3{
+            font-size: 4.5rem;
+            color: var(--black);
+            line-height: 1.8;
+            text-shadow: var(--text-shadow);
+        }
+        .home .content p{
+            font-size: 1.7rem;
+            color: var(--light-color);
+            line-height: 1.8;
+            padding: 1rem 0;
+        }
+        .icons-container{
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+            padding-top: 5rem;
+            padding-bottom: 5rem;
+        }
+        .icons-container .icons{
+            border: var(--border);
+            box-shadow: var(--box-shadow);
+            border-radius: .5rem;
+            text-align: center;
+            padding: 2.5rem;
+        }
+        .icons-container .icons i{
+            font-size: 4.5rem;
+            color: var(--green);
+            padding-bottom: .7rem;
+        }
+        .icons-container .icons h3{
+            font-size: 4.5rem;
+            color: var(--black);
+            padding: .5rem 0;
+            text-shadow: var(--text-shadow);
+        }
+        .icons-container .icons p{
+            font-size: 1.7rem;
+            color: var(--light-color);
+        }
+        .services .box-container{
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(27rem,1fr));
+            gap: 2rem;
+        }
+        .services .box-container .box{
+            background: #fff;
+            border-radius: .5rem;
+            box-shadow: var(--box-shadow);
+            border: var(--border);
+            padding: 2.5rem;
+        }
+        .services .box-container .box i{
+            color: var(--green);
+            font-size: 5rem;
+            padding-bottom: 1rem;
+        }
+        .services .box-container .box h3{
+            color: var(--black);
+            font-size: 2.5rem;
+            padding: 1rem 0;
+        }
+        .services .box-container .box p{
+            color: var(--light-color);
+            font-size: 1.4rem;
+            line-height: 2;
+        }
+        .about .row{
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        .about .row .image{
+            flex: 1 1 45rem;
+        }
+        .about .row .image img{
+            width:50%;
+        }
+        .about .row .content{
+            flex:1 1 45rem;
+        }
+        .about .row .content h3{
+            color: var(--black);
+            text-shadow: var(--text-shadow);
+            font-size: 4rem;
+            line-height: 1.8;
+        }
+        .about .row .content p{
+            color: var(--light-color);
+            padding: 1rem 0;
+            font-size: 1.5rem;
+            line-height: 1.8;
+        }
+        .doctors .box-container{
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(30rem,1fr));
+            gap: 2rem;
+        }
+        .doctors .box-container .box{
+            text-align: center;
+            background: #fff;
+            border-radius: .5rem;
+            border: var(--border);
+            box-shadow: var(--box-shadow);
+            padding: 2rem;
+        }
+        .doctors .box-container .box img{
+            max-width: -webkit-fill-available;
+            height: 20rem;     
+            width: 20rem;       
+            border: var(--border);
+            border-radius: .5rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        .doctors .box-container .box h3{
+            color: var(--black);
+            font-size: 2.5rem;
+        }
+        .doctors .box-container .box span{
+            color: var(--green);
+            font-size: 1.5rem;
+        }
+        .doctors .box-container .box .share{
+            padding-top: 2rem;
+        }
+        .doctors .box-container .box .share a{
+            height: 5rem;
+            width: 5rem;
+            line-height: 4.5rem;
+            font-size: 2rem;
+            color: var(--green);
+            border-radius: .5rem;
+            border: var(--border);
+            margin: .3rem;
+        }
+        .doctors .box-container .box .share a:hover{
+            background: var(--green);
+            color: #fff;
+            box-shadow: var(--box-shadow);
+        }
+        .book .row{
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        .book .row .image{
+            flex: 1 1 45rem;
+        }
+        .book .row .image img{
+            width: 100%;
+        }
+        .book .row form{
+            flex: 1 1 45rem;
+            background: #fff;
+            border: var(--border);
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            padding: 2rem;
+            border-radius: .5rem;
+        }
+        .book .row form h3{
+            color: var(--black);
+            padding-bottom: 1rem;
+            font-size: 3rem;
+        }
+        .book .row form .box{
+            width: 100%;
+            margin: .7rem 0;
+            border-radius: .5rem;
+            border: var(--border);
+            font-size: 1.6rem;
+            color: var(--black);
+            text-transform: none;
+            padding: 1rem;
+        }
+        .book .row form .btn{
+            padding: 1rem 4rem;
+        }
+        .review .box-container{
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(27rem,1fr));
+            gap: 2rem;
+        }
+        .review .box-container .box{
+            border: var(--border);
+            box-shadow: var(--box-shadow);
+            border-radius: .5rem;
+            padding: 2.5rem;
+            background: #fff;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            z-index: 0;
+        }
+        .review .box-container .box img{
+            height: 10rem;
+            width: 10rem;
+            border-radius: 50%;
+            object-fit: cover;
+            border: .5rem solid #fff;
+        }
+        .review .box-container .box h3{
+            color: #fff;
+            font-size: 2.2rem;
+            padding: .5rem 0;
+        }
+        .review .box-container .box .stars i{
+            color: #fff;
+            font-size: 1.5rem;
+        }
+        .review .box-container .box .text{
+            color:var(--light-color);
+            line-height:1.8 ;
+            font-size: 1.6rem;
+            padding-top: 4rem;
+        }
+        .review .box-container .box::before{
+            content: '';
+            position: absolute;
+            top: -4rem;left: 50%;
+            transform: translateX(-50%);
+            background: var(--green);
+            border-bottom-left-radius: 50%;
+            border-top-right-radius: 50%;
+            height: 25rem;
+            width: 120%;
+            z-index: -1;
+        }
+        .blogs .box-container{
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(30rem,1fr));
+            gap: 2rem;
+        }
+        .blogs .box-container .box{
+            border: var(--border);
+            box-shadow: var(--box-shadow);
+            border-radius: .5rem;
+            padding: 2rem;
+        }
+        .blogs .box-container .box .image{
+            height: 20rem;
+            overflow: hidden;
+            border-radius: .5rem;
+        }
+        .blogs .box-container .box .image img{
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
+        .blogs .box-container .box:hover .image img{
+            transform: scale(1.2);
+        }
+        .blogs .box-container .box .content{
+            padding-top: 1rem;
+        }
+        .blogs .box-container .box .content .icon{
+            padding: 1rem0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .blogs .box-container .box .content .icon a{
+            font-size: 1.4rem;
+            color: var(--light-color);
+        }
+        .blogs .box-container .box .content .icon a:hover{
+            color: var(--green);
+        }
+        .blogs .box-container .box .content .icon a i{
+            padding-right:.5rem ;
+            color: var(--green);
+        }
+        .blogs .box-container .box .content h3{
+            color: var(--black);
+            font-size: 3rem;
+        }
+        .blogs .box-container .box .content p{
+            color: var(--light-color);
+            font-size: 1.5rem;
+            line-height: 1.8;
+            padding: 1rem 0;
+        }
+        .footer .box-container{
+            display: grid;
+            grid-template-columns: repeat(auto-fit,minmax(30rem,1fr));
+            gap: 2rem;
+        }
+        .footer .box-container .box h3{
+            font-size: 2.5rem;
+            color: var(--black);
+            padding: 1rem 0;
+        }
+        .footer .box-container .box a{
+            display: block;
+            font-size: 1.5rem;
+            color: var(--light-color);
+            padding: 1rem 0;
+        }
+        .footer .box-container .box a i{
+            padding-right: .5rem;
+            color: var(--green);
+        }
+        .footer .box-container .box a:hover i{
+            padding-right: 2rem;
+        }
+        .footer .credit{
+            padding: 1rem;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 2rem;
+            color: var(--light-color);
+            border-top: .1rem solid rgba(0,0,0,.1);
+        }
+        .footer .credit span{
+            color: var(--green);
+        }
+
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+
+    </style>
+</head>
+<body>
+    
+    <header class="header">
+        <a href="#" class="logo"> <i class="fas fa-heartbeat"></i> MediBridge</a>
+
+        <nav class="navbar">
+            <div class="profile">
+                
+                <a href="/admin1">Home</a>
+
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle">Doctors</a>
+                    <div class="dropdown-menu">
+                        <a href="/admin1/doctors_request" style="margin: 0; ">Doctors Request</a>
+                        <a href="/admin1/doctors_cancel" style="margin: 0;">Cancelling Doctors</a>
+                    </div>
+                </div>
+
+
+                {% if request.session.id %}
+                <a href="/logout">Logout</a>
+                <a>
+                    <div class="profile">
+                        <span class="username">{{request.session.email}}</span>
+                        <img src="{% static 'img/g.png' %}" alt="Profile" class="profile-img">
+                    </div>
+                </a>
+                {% else %}
+                <a href="/login"> Login </a>
+                {% endif %}
+                
+            </div>
+                
+        </nav>
+    
+        <div id="menu-btn" class="fas fa-bars"></div>
+    
+    
+    </header>
+
+    {% block content %}{% endblock content %}
+
+    <section class="footer">
+        <div class="box-container">
+            <div class="box">
+
+                <h3>Quick links</h3>
+                <a href="/admin1"><i class="fas fa-chevron-right"></i>home</a>
+                {% comment %} <a href="/services"><i class="fas fa-chevron-right"></i>services</a>
+                <a href="/about_us"><i class="fas fa-chevron-right"></i>about</a>
+                <a href="/doctors"><i class="fas fa-chevron-right"></i>doctors</a>
+                <a href="/book_now"><i class="fas fa-chevron-right"></i>book</a>
+                <a href="/review"><i class="fas fa-chevron-right"></i>review</a>
+                <a href="/blogs"><i class="fas fa-chevron-right"></i>blogs</a> {% endcomment %}
+            </div>
+            <div class="box">
+                <h3>Our Services</h3>
+                {% comment %} <a href="/services"><i class="fas fa-chevron-right"></i>dental care</a>
+                <a href="/services"><i class="fas fa-chevron-right"></i>message</a>
+                <a href="/services"><i class="fas fa-chevron-right"></i>cardioloty</a>
+                <a href="/services"><i class="fas fa-chevron-right"></i>diagnosis</a>
+                <a href="/services"><i class="fas fa-chevron-right"></i>ambulance</a> {% endcomment %}
+            </div>
+            <div class="box">
+                <h3>Contact Info</h3>
+                <a href="#"><i class="fas fa-phone"></i>+1 232-435-43</a>
+                <a href="#"><i class="fas fa-phone"></i>+91 123-4532-3</a>
+            </div>
+            <div class="box">
+                <h3>Contact Gmail</h3>
+                <a href="#"><i class="fas fa-envelope"></i>abc@gmail.com</a>
+                <a href="#"><i class="fas fa-envelope"></i>xyz@gmail.com</a>
+            </div>
+                    
+        </div>
+        <div class="credit">Created by <span>Mr. Patel Het</span> | all rights reserved</div>
+
+
+    </section> 
+    
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+        let menu = document.querySelector('#menu-btn');
+        let navbar = document.querySelector('.navbar');
+        let profile = document.querySelector('.profile');
+        menu.onclick = () =>{
+            menu.classList.toggle('fa-times');
+            navbar.classList.toggle('active');
+            profile.classList.toggle('active');
+        }
+        window.onscroll = () =>{
+            menu.classList.remove('fa-times');
+            navbar.classList.remove('active');
+            profile.classList.remove('active');
+        }
+        
+    </script>
+</body>
+</html>
+
+
+
+{% comment %} 
+
+/* Dropdown container */
+.dropdown {
+    background-color: white;
+    font-size: 1.7rem;
+    margin-left: 2rem;
+}
+
+/* Dropdown button styling */
+.dropdown .dropbtn {
+    cursor: pointer;
+}
+
+/* Dropdown content */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: white;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    color: var(--green);
+}
+
+/* Show dropdown on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+
+<!-- Dropdown Menu -->
+<div class="dropdown">
+    <button class="dropbtn" style="color: var(--light-color); background-color: white;">Doctors</button>
+    <div class="dropdown-content">
+    <a href="/admin1/doctors_request">Doctors Request</a>
+    <a href="/admin1/doctors_cancel">Cancelling Doctors</a>
+    </div>
+</div> {% endcomment %}

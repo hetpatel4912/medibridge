@@ -1,0 +1,41 @@
+{% extends "user_layout.html" %}
+{% load static  %}
+{% block content %}
+
+
+
+<section class="home" id="home">
+    <div class="image">
+        <img src="{% static 'img/home-img.svg.png' %}" alt="">
+    </div>
+    <div class="content">
+        <h3>Welcome to MediBridge</h3>
+        <p>MediBridge is a revolutionary online platform designed to streamline healthcare for patients, doctors, and healthcare administrators. Our mission is to simplify access to healthcare services by providing a secure and efficient way for patients to manage their medical history, book appointments, and receive digital prescriptions. Doctors can easily manage patient information, appointments, and provide prescriptions in a hassle-free digital environment. In addition to core healthcare services, MediBridge supports vital features such as blood and organ donor registration and search, helping during emergencies. With secure online payment options, appointment reminders, and personalized hospital recommendations, MediBridge makes healthcare more accessible and convenient for everyone.</p>
+        <a href="#" class="btn">Contact Us<span class="fas fa-chevron-right"></span></a>
+    </div>
+
+</section>
+
+<section class="icons-container">
+    <div class="icons">
+        <i class="fas fa-user-md"></i>
+        <h3>{{doctors}}+</h3>
+        <p>doctors at work</p>
+    </div>
+    <div class="icons">
+        <i class="fas fa-users"></i>
+        <h3>{{patient}}+</h3>
+        <p>patient</p>
+    </div>
+    <div class="icons">
+        <i class="fas fa-procedures"></i>
+        <h3>{{donors}}+</h3>
+        <p>Donors</p>
+    </div>
+    
+
+</section>
+
+
+
+{% endblock content %}

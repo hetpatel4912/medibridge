@@ -1,0 +1,155 @@
+{% extends "user_layout.html" %}
+{% load static  %}
+{% block content %}
+
+<style>
+
+    /* Container div styling */
+  .table-container {
+      max-width: inherit;
+      margin: 20px auto;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+      overflow-x: auto;
+    }
+
+    /* Table styling */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    /* Table headers */
+    th, td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f4f4f4;
+      font-weight: bold;
+    }
+
+    /* Zebra striping for rows */
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    tr:hover {
+      background-color: #eaeaea;
+    }
+
+    .table-action {
+      display: flex;
+      justify-content: flex-end; /* Aligns the button to the right */
+      margin-bottom: 1rem; /* Adds space between the button and the table */
+  }
+
+  .table-action .btn {
+      font-size: 1.6rem;
+      padding: 0.8rem 1.6rem;
+      background-color: var(--green);
+      color: #fff;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+  }
+
+  .table-action .btn:hover {
+      background-color: darkgreen; /* Change color on hover */
+  }
+
+  .remove-btn {
+    font-size: 1.2rem;
+    padding: 0.8rem 1.6rem;
+    background-color: red;
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    }
+    .remove-btn:hover {
+    background-color: darkred; /* Change color on hover */
+    }
+
+
+    .cancel-btn {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    .cancel-btn:hover {
+        background-color: darkred;
+    }
+    
+</style>
+
+<section>
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}  
+        {% endfor %}
+    {% endif %}
+
+
+
+    <h1>Appointment Lists --------></h1>
+
+       <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Sr no.</th>
+              <th>Name</th>
+              <th>Phone No.</th>
+              <th>Date</th>
+              <th>Doctor Name</th>
+              <th>Specialist</th>
+              <th>Cancellation</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            {% for appoint in appointment %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{appoint.name}}</td>
+                <td>{{appoint.phoneno}}</td>
+                <td>{{appoint.date}}</td>
+                <td>{{appoint.doctor}}</td>
+                <td>{{appoint.specialist}}</td>
+                <td>
+                    {% if appoint.doctor == "Doctor is removed by Admin" %}
+                        Your Appointment is Automatically Cancelled
+                    {% elif appoint.date >= today %}
+                    <form action="/api/cancel_appointment/{{appoint.id}}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="appointment_id" value="{{ appoint.id }}">
+                        <button type="submit" class="cancel-btn">Cancel</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+
+
+          </tbody>
+        </table>
+      </div>
+
+
+    
+</section>
+
+
+
+{% endblock content %}

@@ -1,0 +1,62 @@
+/* General Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Navbar Customization */
+.navbar {
+    background-color: white;
+}
+
+.navbar-brand {
+    color: #0066cc;
+    font-weight: bold;
+}
+
+/* Sidebar Styling */
+#sidebar {
+    height: 100vh;
+    background-color: #0066cc;
+    color: white;
+}
+
+#sidebar .nav-link {
+    color: white;
+    padding: 10px;
+}
+
+#sidebar .nav-link.active {
+    background-color: #004b9a;
+}
+
+/* Main Dashboard Styling */
+main {
+    background-color: white;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+}
+
+.table {
+    background-color: white;
+    border-radius: 10px;
+}
+
+.table th {
+    color: #004b9a;
+}
+
+.table td {
+    color: #333;
+}
+
+/* Responsive Styles */
+@media (max-width: 767px) {
+    #sidebar {
+        position: absolute;
+        width: 100%;
+        height: auto;
+        background-color: #0066cc;
+    }
+}

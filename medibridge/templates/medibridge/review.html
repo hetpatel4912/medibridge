@@ -1,0 +1,37 @@
+{% extends "user_layout.html" %}
+{% load static  %}
+{% block content %}
+
+
+<section class="review" id="review">
+    <h1 class="heading">client`s <span>review</span></h1>
+    <div class="box-container">
+        <div class="box">
+            <img src="{% static 'img/pic-1.jpeg' %} " alt="">
+            <h3>john deo</h3>
+            <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+            </div>
+            <p class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate maxime sequi nobis aliquam quisquam accusantium aperiam alias, fugiat velituo laborum? Ipsa, ut!</p>
+        </div>
+        <div class="box">
+            <img src="{% static 'img/pic-2.jpeg' %} " alt="">
+            <h3>john deo</h3>
+            <div class="stars">
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star-half-alt"></i>
+            </div>
+            <p class="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptate maxime sequi nobis aliquam quisquam accusantium aperiam alias, fugiat velit o laborum? Ipsa, ut!</p>
+        </div>
+    </div>
+
+</section>
+
+{% endblock content %}

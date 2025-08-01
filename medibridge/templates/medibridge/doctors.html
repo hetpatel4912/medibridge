@@ -1,0 +1,92 @@
+{% extends "user_layout.html" %}
+{% load static  %}
+{% block content %}
+
+<section class="doctors" id="doctors">
+    <h1 class="heading">our <span >doctors</span></h1>
+    <div class="box-container">
+        {% for doc in doctors %}
+            <div class="box">
+                <img src="{{doc.image.url}}" alt="hi">
+                <h2>ID : {{doc.id}}</h2>
+                <h3>Name : {{ doc.name }}</h3>
+                <span>Specialist : {{ doc.specialist }} </span>
+                <div class="share">
+                    <a href="/book_now?d_id={{doc.id}}" class="fab">book</a>
+                    <a href="#" class="fab fa-facebook-f"></a>
+                    <a href="#" class="fab fa-twitter"></a>
+                    <a href="#" class="fab fa-instagram"></a>
+                    <a href="#" class="fab fa-linkedin"></a>
+                </div>
+            </div>
+        {% endfor %}
+        {% comment %} <div class="box">
+            <img src="{% static 'img/doc-1.jpeg' %} " alt="">
+            <h3>john deo</h3>
+            <span>epert doctors</span>
+            <div class="share">
+                <a href="#" class="fab fa-facebook-f"></a>
+                <a href="#" class="fab fa-twitter"></a>
+                <a href="#" class="fab fa-instagram"></a>
+                <a href="#" class="fab fa-linkedin"></a>
+            </div>
+        </div>
+        <div class="box">
+            <img src="{% static 'img/doc-2.jpeg' %} " alt="">
+            <h3>john deo</h3>
+            <span>epert doctors</span>
+            <div class="share">
+                <a href="#" class="fab fa-facebook-f"></a>
+                <a href="#" class="fab fa-twitter"></a>
+                <a href="#" class="fab fa-instagram"></a>
+                <a href="#" class="fab fa-linkedin"></a>
+            </div>
+        </div>
+        <div class="box">
+            <img src="{% static 'img/doc-3.jpeg' %} " alt="">
+            <h3>john deo</h3>
+            <span>epert doctors</span>
+            <div class="share">
+                <a href="#" class="fab fa-facebook-f"></a>
+                <a href="#" class="fab fa-twitter"></a>
+                <a href="#" class="fab fa-instagram"></a>
+                <a href="#" class="fab fa-linkedin"></a>
+            </div>
+        </div>
+        <div class="box">
+            <img src="{% static 'img/doc-4.jpeg' %} " alt="">
+            <h3>john deo</h3>
+            <span>epert doctors</span>
+            <div class="share">
+                <a href="#" class="fab fa-facebook-f"></a>
+                <a href="#" class="fab fa-twitter"></a>
+                <a href="#" class="fab fa-instagram"></a>
+                <a href="#" class="fab fa-linkedin"></a>
+            </div>
+        </div>
+        <div class="box">
+            <img src="{% static 'img/doc-5.jpeg' %} " alt="">
+            <h3>john deo</h3>
+            <span>epert doctors</span>
+            <div class="share">
+                <a href="#" class="fab fa-facebook-f"></a>
+                <a href="#" class="fab fa-twitter"></a>
+                <a href="#" class="fab fa-instagram"></a>
+                <a href="#" class="fab fa-linkedin"></a>
+            </div>
+        </div>
+        <div class="box">
+            <img src="{% static 'img/doc-6.jpeg' %} " alt="">
+            <h3>john deo</h3>
+            <span>epert doctors</span>
+            <div class="share">
+                <a href="#" class="fab fa-facebook-f"></a>
+                <a href="#" class="fab fa-twitter"></a>
+                <a href="#" class="fab fa-instagram"></a>
+                <a href="#" class="fab fa-linkedin"></a>
+            </div>
+        </div> {% endcomment %}
+    </div>
+</section>
+
+{% endblock content %}
