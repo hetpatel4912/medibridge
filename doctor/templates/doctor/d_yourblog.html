@@ -1,0 +1,68 @@
+{% extends "d_layout.html" %}
+{% load static  %}
+{% block content %}
+<style>
+    .blogs .box-container .box .image{
+        height: 20rem;
+        overflow: hidden;
+        border-radius: .5rem;
+        display: flex;
+        justify-content: center;
+    }
+    .blogs .box-container .box .image img{
+        height: 100%;
+        width: auto;
+    }
+
+    .cancel-btn {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        margin: 0px 10px 2px 10px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+    .cancel-btn:hover {
+        background-color: darkred;
+    }
+</style>
+
+<section class="blogs" id="blogs" >
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}  
+        {% endfor %}
+    {% endif %}
+
+
+    <h1 class="heading">Your <span>Blogs</span></h1>
+    <div class="box-container">
+
+        {% for blog in blogs %}
+            <div class="box" id="blog_box">
+                <form action="/doctor/remove_blog" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="blog_id" value="{{ blog.id }}">
+                    <button type="submit" class="cancel-btn">Delete Blog</button>
+                </form>
+                <div class="image">
+                    <img src="{{ blog.img.url }} " alt="">
+                </div>
+                <div class="content">
+                    <div class="icon">
+                        <a href="#"><i class="fas fa-calender"></i>{{blog.date}}</a>
+                        <a href="#"><i class="fas fa-user"></i>by {{blog.d_name}}</a>
+                    </div>
+                    <h3>{{blog.title}}</h3>
+                    <p>{{blog.content}}</p>
+                    <a href="#" class="btn">learn more<span class="fas fa-chevron-right"></span></a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    
+</section>
+
+{% endblock content %}

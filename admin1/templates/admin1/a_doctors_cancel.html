@@ -1,0 +1,93 @@
+{% extends "a_layout.html" %}
+{% load static  %}
+{% block content %}
+
+<style>
+     /* Container div styling */
+     .table-container {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0px 4px 8px rgba(0,0,0,0.1);
+        overflow-x: auto;
+      }
+  
+      /* Table styling */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+  
+      /* Table headers */
+      th, td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: left;
+      }
+  
+      th {
+        background-color: #f4f4f4;
+        font-weight: bold;
+      }
+  
+      /* Zebra striping for rows */
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+  
+      tr:hover {
+        background-color: #eaeaea;
+      }
+</style>
+
+
+<section>
+
+    {% for mess in messages %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>
+            {{mess}}
+        </strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+   <h1>All Doctors Available --------></h1>
+
+   <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Specialist</th>
+          <th>Iamge</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for doc in doctors %}
+        <tr>
+            <td>{{doc.name}}</td>
+            <td>{{doc.email}}</td>
+            <td>{{doc.specialist}}</td>
+            <td><img width="100px" height="100px" src="{{doc.image.url}}" alt="Image not found"></td>
+            <td>
+              <form method="POST">
+                  {% csrf_token %}
+                  <input type="hidden" name="add" value="/admin1/doctors_cancel">
+                  <button formaction="cancel_doctor/{{doc.id}}" class="btn-danger btn" >Reject</button>
+              </form>
+              </td>
+          </tr>
+        {% endfor %}
+        
+        
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+{% endblock content %}

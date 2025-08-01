@@ -1,0 +1,88 @@
+{% extends "a_layout.html" %}
+{% load static  %}
+{% block content %}
+
+
+<style>
+   
+   .container {
+       width: 90%;
+       margin: auto;
+       overflow: hidden;
+       text-align: center;
+   }
+   .cards {
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
+        flex-wrap: wrap;
+        gap: 50px;
+   }
+   .card {
+        background: #fff;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        width: 100%;
+        max-width: 300px;
+        transition: transform 0.3s ease;
+   }
+   .card:hover {
+       transform: translateY(-10px);
+   }
+   .card i {
+       font-size: 60px;
+       margin-bottom: 10px;
+       color: #2575fc;
+   }
+   .count {
+       font-size: 28px;
+       font-weight: bold;
+   }
+   .info{
+        font-size: 20px;
+   }
+   @media (max-width: 768px) {
+    .cards {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+</style>
+
+
+<section>
+   {% comment %} <h1>This is admin Panel.</h1> {% endcomment %}
+
+
+   
+   <div class="container">
+      <div class="cards">
+          <div class="card">
+              <i class="fas fa-users"></i>
+              <p class="count">{{ patient }}</p>
+              <p class="info">Total Users</p>
+          </div>
+          <div class="card">
+              <i class="fas fa-user-md"></i>
+              <p class="count">{{ doctors }}</p>
+              <p class="info">Total Doctors</p>
+          </div>
+          <div class="card">
+              <i class="fas fa-hand-holding-heart"></i>
+              <p class="count">{{ donors }}</p>
+              <p class="info">Total Donors</p>
+          </div>
+      </div>
+  </div>
+
+
+</section>
+
+ 
+
+
+
+{% endblock content %}

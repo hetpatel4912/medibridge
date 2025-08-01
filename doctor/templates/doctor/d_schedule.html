@@ -1,0 +1,132 @@
+{% extends "d_layout.html" %}
+{% load static  %}
+{% block content %}
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+    body { font-family: Arial, sans-serif; text-align: center; }
+    .calendar { width: 100%; margin: 50px auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 .5rem 1.5rem rgba(0,0,0,.1); }
+    .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .calendar-header button { background: #0066cc; color: white; border: none; padding: 10px; cursor: pointer; border-radius: 5px; }
+    .calendar table { width: 100%; border-collapse: collapse; }
+    .calendar th, .calendar td { width: 14%; height: 60px; text-align: center; border: 1px solid #ddd; cursor: pointer; font-size: 1.5rem; }
+    .calendar th { background-color: #0066cc; color: white; }
+    .green-mark { background-color: #16a085 !important; color: white; }
+    .red-mark { background-color: #e74c3c !important; color: white; }
+
+    td[title] {
+        position: relative;
+        cursor: pointer;
+    }
+    
+    td[title]:hover::after {
+        content: attr(title);
+        position: absolute;
+        background: black;
+        color: white;
+        padding: 5px;
+        border-radius: 5px;
+        font-size: 1.5em;
+        white-space: nowrap;
+        top: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+    }
+    
+    
+</style>
+
+<section>
+    <div class="calendar">
+        <div class="calendar-header">
+            <button onclick="prevMonth()">&#9665;</button>
+            <span id="month-year"></span>
+            <button onclick="nextMonth()">&#9655;</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
+                </tr>
+            </thead>
+            <tbody id="calendar-body"></tbody>
+        </table>
+    </div>
+</section>
+
+<script>
+    let currentDate = new Date();
+    let bookedDates = [];
+
+    function fetchBookings() {
+        fetch('/doctor/get-bookings/')
+            .then(response => response.json())
+            .then(data => {
+                bookedDates = data.booked_dates;
+                details = data.details;
+                console.log("bookedDates :" + bookedDates);
+                console.log("EWQE : " + details);
+                generateCalendar();
+            });
+    }
+
+    function generateCalendar() {
+        const calendarBody = document.getElementById("calendar-body");
+        calendarBody.innerHTML = "";
+        document.getElementById("month-year").innerText = currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+        let year = currentDate.getFullYear();
+        let month = currentDate.getMonth();
+        let firstDay = new Date(year, month, 1).getDay();
+        let daysInMonth = new Date(year, month + 1, 0).getDate();
+        let today = new Date().setHours(0, 0, 0, 0);
+
+        let date = 1;
+        let count = 0;
+
+        for (let i = 0; i < 6; i++) {
+            let row = document.createElement("tr");
+            for (let j = 0; j < 7; j++) {
+                let cell = document.createElement("td");
+                if (i === 0 && j < firstDay) {
+                    cell.innerText = "";
+                } else if (date <= daysInMonth) {
+                    let cellDate = new Date(year, month, date).toLocaleDateString('en-CA');
+                    cell.innerText = date;
+
+                    if (new Date(cellDate) < today) {
+                        cell.style.color = "#aaa";
+                    } else if (bookedDates.includes(cellDate)) {                        
+                        cell.setAttribute("title", `Booked by : ${details[count].name} ${details[count].phoneno}`);
+                        count++;
+                        cell.classList.add("green-mark"); // Marked as booked
+                    } else {
+                        cell.setAttribute("title", `Not Booked`);
+                        cell.classList.add("red-mark"); // Available
+                    }
+                    date++;
+                }
+                row.appendChild(cell);
+            }
+            calendarBody.appendChild(row);
+        }
+    }
+
+    function prevMonth() {
+        currentDate.setMonth(currentDate.getMonth() - 1);
+        generateCalendar();
+    }
+
+    function nextMonth() {
+        currentDate.setMonth(currentDate.getMonth() + 1);
+        generateCalendar();
+    }
+
+    fetchBookings();
+</script>
+
+
+{% endblock content %}

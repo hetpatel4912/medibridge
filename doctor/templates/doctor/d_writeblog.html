@@ -1,0 +1,107 @@
+{% extends "d_layout.html" %}
+{% load static  %}
+{% block content %}
+{% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> {% endcomment %}
+<style>
+    .container {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        padding: 30px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        text-align: center;
+    }
+    h2 {
+        color: #333;
+        font-size: 24px;
+    }
+    .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+    }
+    label {
+        font-size: medium;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+    }
+    input, textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 16px;
+    }
+    button {
+        width: 100%;
+        padding: 12px;
+        background: #ff758c;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    button:hover {
+        background: #ff5864;
+    }
+    .preview {
+        margin-top: 5px;
+        margin-bottom: 20px;
+    }
+    .preview .img {
+        max-width: 100%;
+        border-radius: 10px;
+        margin-top: 10px;
+    }
+    
+</style>
+
+<section>
+
+    {% if messages %}
+          {% for message in messages %}
+            {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}  
+          {% endfor %}
+        {% endif %}
+
+        
+    <div class="container">
+        <h2 style="margin-bottom: 10px;">📝 Submit Your Blog</h2>
+        <form action="/doctor/d_writeblog" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" id="title" name="title" placeholder="Enter blog title..." required>
+            </div>
+            <div class="form-group">
+                <label for="content">Content</label>
+                <textarea id="content" name="content" rows="6" placeholder="Write your blog content here..." required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="image">Upload Image</label>
+                <input type="file" id="image" name="image" accept="image/*" onchange="previewImage(event)" required>
+            </div>
+            <div class="preview">
+                <img class="img" id="imagePreview" style="display: none; height: 100px; width: auto;" />
+            </div>
+            <button type="submit">🚀 Submit Blog</button>
+        </form>
+    </div>
+</section>
+<script>
+    function previewImage(event) {
+        const reader = new FileReader();
+        reader.onload = function(){
+            const output = document.getElementById('imagePreview');
+            output.src = reader.result;
+            output.style.display = 'block';
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+
+
+{% endblock content %}
